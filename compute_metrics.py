@@ -70,7 +70,7 @@ def compute(ip,L,filename) :
     AVG_HOP = float(HOP_COUNT)/float(REQ_SENT_COUNT)
     
     return(REQ_SENT_COUNT,REQ_RECIEVED_COUNT,REPLY_SENT_COUNT,REPLY_RECIEVED_COUNT,round(BYTES_SENT,2),round(DATA_SENT,2),\
-        round(BYTES_RECIEVED,2),round(AVG_RTT,2),round(REQ_THROUGHPUT,2),round(REQ_GOODPUT,2),round(AVG_REPLY_DELAY,2,),round(AVG_HOP,2))
+        round(BYTES_RECIEVED,2),round(DATA_RECIEVED,2),round(AVG_RTT,2),round(REQ_THROUGHPUT,1),round(REQ_GOODPUT,1),round(AVG_REPLY_DELAY,2,),round(AVG_HOP,2))
 
 
 

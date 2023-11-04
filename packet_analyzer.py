@@ -45,7 +45,7 @@ def main():
 
             node_name = filtered_file.replace("_filtered.txt", "").replace("_"," ")
 
-            file.write(f"{node_name}\n")
+            file.write(f"{node_name}\n\n")
             file.write("Echo Requests Sent,Echo Requests Received,Echo Replies Sent,Echo Replies Received\n")
             file.write(f"{request_sent},{request_recieved},{replies_sent},{replies_received}\n")
             file.write("Echo Request Bytes Sent (bytes),Echo Request Data Sent (bytes)\n")
