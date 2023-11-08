@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
-from filter_packets import *
-from packet_parser import *
-from compute_metrics import *
+# Import necessary functions from other modules.
+from filter_packets import filter
+from packet_parser import parse
+from compute_metrics import compute
 
-
+# Define IP addresses to filter packets for and the output file.
 IP_FILE_1_FILTER = "192.168.100.1"
 IP_FILE_2_FILTER = "192.168.100.2"
 IP_FILE_3_FILTER = "192.168.200.1"
@@ -12,12 +13,18 @@ IP_FILE_4_FILTER = "192.168.200.2"
 
 OUTPUT_FILE = "output.txt"
 
+# Define the main function to orchestrate the packet filtering and analysis.
 def main():
-    L1,L2,L3,L4 = [],[],[],[]
+    L1, L2, L3, L4 = [], [], [], []  # Create empty lists for parsed data from each node.
+    
+    # Call the filter function to filter packets and save filtered data for each node.
     filter()
-    for i in range(1,5):
+    
+    # Iterate over nodes and parse the filtered data into their respective lists.
+    for i in range(1, 5):
         parse("Node_" + str(i) + "_filtered.txt", eval("L" + str(i)))
 
+    # Define a list of nodes, their filtered data lists, and the corresponding output filenames.
     nodes = [
         (IP_FILE_1_FILTER, L1, "Node_1_filtered.txt"),
         (IP_FILE_2_FILTER, L2, "Node_2_filtered.txt"),
@@ -25,16 +32,17 @@ def main():
         (IP_FILE_4_FILTER, L4, "Node_4_filtered.txt")
     ]
 
+    # Open the output file for writing and compute metrics for each node.
     with open(OUTPUT_FILE, "w") as file:
         for ip, list_obj, filtered_file in nodes:
             (
                 request_sent, 
-                request_recieved, 
+                request_received, 
                 replies_sent, 
                 replies_received, 
                 request_bytes_sent, 
                 request_data_sent, 
-                request_bytes_receieved, 
+                request_bytes_received, 
                 request_data_received, 
                 average_rtt, 
                 request_throughput, 
@@ -43,15 +51,15 @@ def main():
                 echo_request_hop
             ) = compute(ip, list_obj, filtered_file)
 
-            node_name = filtered_file.replace("_filtered.txt", "").replace("_"," ")
-
+            # Extract the node name from the filtered file and write metrics to the output file.
+            node_name = filtered_file.replace("_filtered.txt", "").replace("_", " ")
             file.write(f"{node_name}\n\n")
             file.write("Echo Requests Sent,Echo Requests Received,Echo Replies Sent,Echo Replies Received\n")
-            file.write(f"{request_sent},{request_recieved},{replies_sent},{replies_received}\n")
+            file.write(f"{request_sent},{request_received},{replies_sent},{replies_received}\n")
             file.write("Echo Request Bytes Sent (bytes),Echo Request Data Sent (bytes)\n")
             file.write(f"{request_bytes_sent},{request_data_sent}\n")
             file.write("Echo Request Bytes Received (bytes),Echo Request Data Received (bytes)\n")
-            file.write(f"{request_bytes_receieved},{request_data_received}\n")
+            file.write(f"{request_bytes_received},{request_data_received}\n")
             file.write("\n")
             file.write(f"Average RTT (milliseconds),{average_rtt}\n")
             file.write(f"Echo Request Throughput (kB/sec),{request_throughput}\n")
@@ -61,4 +69,5 @@ def main():
             file.write("\n")
 
 if __name__ == "__main__":
+    # Call the main function to start the packet filtering and analysis process.
     main()
